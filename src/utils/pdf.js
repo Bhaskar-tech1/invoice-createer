@@ -14,13 +14,21 @@ export async function generatePDF(elementId, invoiceNum) {
     // Small delay to ensure rendering is complete
     await new Promise(r => setTimeout(r, 100));
 
+    // Force exact dimensions for html2canvas
+    element.classList.add('no-transform-for-print');
+    await new Promise(r => setTimeout(r, 100));
+
     // Capture canvas
     const canvas = await html2canvas(element, {
       scale: 2, // Higher resolution
       useCORS: true,
       logging: false,
-      backgroundColor: '#ffffff'
+      backgroundColor: '#ffffff',
+      windowWidth: element.scrollWidth,
+      windowHeight: element.scrollHeight
     });
+    
+    element.classList.remove('no-transform-for-print');
 
     const imgData = canvas.toDataURL('image/png');
     
@@ -48,13 +56,21 @@ export async function generatePDF(elementId, invoiceNum) {
 
 export async function generateAssets(elementId) {
   const element = document.getElementById(elementId);
+  // Force exact dimensions for html2canvas
+  element.classList.add('no-transform-for-print');
+  await new Promise(r => setTimeout(r, 100));
+
   // Capture canvas
   const canvas = await html2canvas(element, {
     scale: 2, // Higher resolution
     useCORS: true,
     logging: false,
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
+    windowWidth: element.scrollWidth,
+    windowHeight: element.scrollHeight
   });
+  
+  element.classList.remove('no-transform-for-print');
 
   return new Promise((resolve) => {
     canvas.toBlob((imageBlob) => {
