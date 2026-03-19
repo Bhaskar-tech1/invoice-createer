@@ -1,4 +1,4 @@
-import { Hexagon, FileText, Zap, Settings, Clock, Menu, X } from 'lucide';
+import { createIcons, Hexagon, FileText, Zap, Settings, Clock, Menu, X } from 'lucide';
 
 import { supabase } from '../utils/supabase.js';
 
