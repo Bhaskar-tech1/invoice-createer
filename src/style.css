@@ -773,7 +773,6 @@ textarea.input {
 }
 
 #view-new-invoice {
-  display: flex !important;
   flex-direction: row;
 }
 
