@@ -44,6 +44,12 @@ document.addEventListener('DOMContentLoaded', () => {
     icons: { Zap, Hexagon, FileText, Settings, Clock, LogOut }
   });
 
+  // Initial Auth Check
+  supabase.auth.getSession().then(({ data: { session } }) => {
+    currentUser = session?.user || null;
+    updateAppVisibility();
+  });
+
   // Listen to Auth State
   supabase.auth.onAuthStateChange(async (event, session) => {
     currentUser = session?.user || null;
