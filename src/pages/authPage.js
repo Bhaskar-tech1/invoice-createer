@@ -1,5 +1,5 @@
 import { supabase } from '../utils/supabase.js';
-import { createIcons, Mail, Chrome, Zap } from 'lucide';
+import { createIcons, Mail, Zap } from 'lucide';
 
 export function renderAuthPage(containerId) {
   const container = document.getElementById(containerId);
@@ -31,12 +31,6 @@ export function renderAuthPage(containerId) {
         <div class="auth-form-wrapper">
           <h2 id="auth-title" class="auth-form-title">Welcome back</h2>
           <p id="auth-subtitle" class="auth-form-subtitle">Log in to access your dashboard</p>
-
-          <button id="auth-google-btn" class="btn btn-primary btn-google">
-            <i data-lucide="chrome"></i> Continue with Google
-          </button>
-          
-          <div class="auth-divider"><span>or continue with email</span></div>
           
           <form id="auth-form">
             <div class="input-group">
@@ -64,7 +58,7 @@ export function renderAuthPage(containerId) {
     </div>
   `;
 
-  createIcons({ icons: { Mail, Chrome, Zap } });
+  createIcons({ icons: { Mail, Zap } });
 
   let isLogin = true;
 
@@ -75,7 +69,6 @@ export function renderAuthPage(containerId) {
   const promptText = document.getElementById('auth-toggle-prompt');
   const form = document.getElementById('auth-form');
   const errorMsg = document.getElementById('auth-error');
-  const googleBtn = document.getElementById('auth-google-btn');
 
   // Toggle Mode
   toggleBtn.addEventListener('click', (e) => {
@@ -87,12 +80,6 @@ export function renderAuthPage(containerId) {
     promptText.textContent = isLogin ? "Don't have an account?" : "Already have an account?";
     toggleBtn.textContent = isLogin ? 'Sign up' : 'Log in';
     errorMsg.classList.add('hidden');
-  });
-
-  // Google Login
-  googleBtn.addEventListener('click', async () => {
-    // Attempt OAuth login
-    await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } });
   });
 
   // Email Submit
@@ -112,8 +99,18 @@ export function renderAuthPage(containerId) {
         const { error: signInErr } = await supabase.auth.signInWithPassword({ email, password: pwd });
         error = signInErr;
       } else {
-        const { error: signUpErr } = await supabase.auth.signUp({ email, password: pwd });
+        const { error: signUpErr } = await supabase.auth.signUp({ 
+          email, 
+          password: pwd,
+          options: {
+            emailRedirectTo: window.location.origin
+          }
+        });
         error = signUpErr;
+
+        if (!error) {
+          alert('Success! Please check your email inbox to verify your account. Once verified, you can access your dashboard.');
+        }
       }
 
       if (error) throw error;
