@@ -729,7 +729,30 @@ textarea.input {
 }
 
 /* Mobile Responsiveness */
+.mobile-only {
+  display: none;
+}
+
+#view-new-invoice {
+  display: flex !important;
+  flex-direction: row;
+}
+
 @media (max-width: 768px) {
+  .mobile-only {
+    display: block !important;
+  }
+  
+  .mobile-preview-action {
+    position: sticky;
+    bottom: 24px;
+    z-index: 50;
+  }
+  
+  #view-new-invoice {
+    flex-direction: column;
+  }
+  
   #app {
     flex-direction: column;
   }
@@ -806,9 +829,29 @@ textarea.input {
     align-items: flex-start;
   }
   
-  /* Preview Panel */
-  #preview-panel {
-    width: 100vw;
+  /* Form Editor Pane */
+  #invoice-editor-pane {
+    width: 100%;
+    /* Let it take natural scrolling */
+    overflow-y: visible !important;
+  }
+  
+  /* Live Preview Pane - Hidden by default on mobile, overlaid when active */
+  #invoice-live-preview-pane {
+    display: none;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bg-app) !important;
+    z-index: 1000;
+    overflow-y: auto !important;
+  }
+  
+  #invoice-live-preview-pane.mobile-active {
+    display: block;
+    animation: slideInRight 0.3s forwards;
   }
   
   .invoice-a4 {

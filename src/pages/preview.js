@@ -1,5 +1,5 @@
 import { generatePDF, generateAssets } from '../utils/pdf.js';
-import { createIcons, X, Download, Save } from 'lucide';
+import { createIcons, X, Download, Save, ArrowLeft } from 'lucide';
 import { supabase } from '../utils/supabase.js';
 import { refreshSidebarMetrics } from '../components/sidebar.js';
 
@@ -11,6 +11,11 @@ export function initPreview(containerId) {
 
   container.innerHTML = `
     <div style="padding: 24px; position: sticky; top: 0; display: flex; flex-direction: column; gap: 24px;">
+      
+      <button id="mobile-hide-preview-btn" class="btn btn-ghost mobile-only" style="align-self: flex-start; margin-bottom: -12px;">
+        <i data-lucide="arrow-left"></i> Back to Editor
+      </button>
+
       <div class="preview-footer" style="display: flex; gap: 12px; width: 100%;">
         <button id="save-invoice-btn" class="btn btn-ghost" style="flex: 1;">
           <i data-lucide="save"></i> Save to Cloud
@@ -86,8 +91,15 @@ export function initPreview(containerId) {
   // Listen to form updates
   window.addEventListener('invoiceUpdated', updatePreviewData);
 
+  const hideBtn = document.getElementById('mobile-hide-preview-btn');
+  if (hideBtn) {
+    hideBtn.addEventListener('click', () => {
+      document.getElementById('invoice-live-preview-pane').classList.remove('mobile-active');
+    });
+  }
+
   createIcons({
-    icons: { X, Download, Save }
+    icons: { X, Download, Save, ArrowLeft }
   });
 }
 

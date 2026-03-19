@@ -1,4 +1,4 @@
-import { createIcons, Plus, Trash2 } from 'lucide';
+import { createIcons, Plus, Trash2, Eye } from 'lucide';
 
 export function renderForm(containerId) {
   const container = document.getElementById(containerId);
@@ -127,6 +127,13 @@ export function renderForm(containerId) {
         <textarea class="input data-field" data-field="notes" placeholder="Thank you for your business. Payment is due within 30 days."></textarea>
       </div>
     </section>
+
+    <!-- Mobile Action -->
+    <div class="mobile-preview-action mobile-only">
+      <button id="mobile-show-preview-btn" class="btn btn-primary btn-large" style="width: 100%; box-shadow: 0 4px 24px rgba(0,0,0,0.5);">
+        <i data-lucide="eye"></i> View Preview & Save
+      </button>
+    </div>
     
   `;
 
@@ -142,9 +149,17 @@ export function renderForm(containerId) {
   createIcons({
     icons: {
       Plus,
-      Trash2
+      Trash2,
+      Eye
     }
   });
+
+  const showBtn = document.getElementById('mobile-show-preview-btn');
+  if (showBtn) {
+    showBtn.addEventListener('click', () => {
+      document.getElementById('invoice-live-preview-pane').classList.add('mobile-active');
+    });
+  }
 
   // Trigger sync on load
   setTimeout(() => triggerUpdateEvent(), 50);
