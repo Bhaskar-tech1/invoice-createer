@@ -54,6 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
 function updateAppVisibility() {
   const appContainer = document.getElementById('app');
   const authPage = document.getElementById('auth-page');
+  const loader = document.getElementById('initial-loader');
+  
+  if (loader) {
+    loader.classList.add('loader-hidden');
+    setTimeout(() => loader.remove(), 300); // Wait for fade out
+  }
   
   if (currentUser) {
     // Authenticated

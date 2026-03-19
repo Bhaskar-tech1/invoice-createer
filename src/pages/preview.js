@@ -1,5 +1,5 @@
 import { generatePDF, generateAssets } from '../utils/pdf.js';
-import { createIcons, X, Download, Save, ArrowLeft } from 'lucide';
+import { createIcons, X, Download, Save, ArrowLeft, Loader2 } from 'lucide';
 import { supabase } from '../utils/supabase.js';
 import { refreshSidebarMetrics } from '../components/sidebar.js';
 
@@ -99,7 +99,7 @@ export function initPreview(containerId) {
   }
 
   createIcons({
-    icons: { X, Download, Save, ArrowLeft }
+    icons: { X, Download, Save, ArrowLeft, Loader2 }
   });
 }
 
@@ -114,19 +114,25 @@ async function handleSaveInvoice() {
   
   const btn = document.getElementById('save-invoice-btn');
   const oldHtml = btn.innerHTML;
-  btn.innerHTML = 'Saving...';
+  
+  const setLoadState = (msg) => {
+    btn.innerHTML = `<i data-lucide="loader-2" class="icon-spin"></i> ${msg}`;
+    createIcons({ icons: { Loader2 }, attrs: { 'data-lucide': 'loader-2' } });
+  };
+
+  setLoadState('Preparing...');
   btn.disabled = true;
 
   try {
     // Generate image and PDF blobs
-    btn.innerHTML = 'Generating assets...';
+    setLoadState('Generating assets...');
     const { imageBlob, pdfBlob } = await generateAssets('invoice-paper');
     
     const timestamp = Date.now();
     const imagePath = `${user.id}/${timestamp}_preview.png`;
     const pdfPath = `${user.id}/${timestamp}_invoice.pdf`;
 
-    btn.innerHTML = 'Uploading assets...';
+    setLoadState('Uploading assets...');
     // Upload image
     const { error: imgError } = await supabase.storage
       .from('invoice_assets')
@@ -147,7 +153,7 @@ async function handleSaveInvoice() {
       .from('invoice_assets')
       .getPublicUrl(pdfPath);
 
-    btn.innerHTML = 'Saving to database...';
+    setLoadState('Saving to database...');
     // Save record mapping
     const { error } = await supabase.from('invoices').insert({
       user_id: user.id,

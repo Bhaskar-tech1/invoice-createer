@@ -7,8 +7,14 @@
     <title>InvoiceAI - Premium Invoice Generator</title>
   </head>
   <body>
+    <!-- Global Initial Loader -->
+    <div id="initial-loader" class="global-loader">
+      <div class="loader-spinner"></div>
+      <p>Loading InvoiceAI...</p>
+    </div>
+
     <!-- Full Page Auth Wall -->
-    <div id="auth-page"></div>
+    <div id="auth-page" style="display: none;"></div>
 
     <!-- Main Application (Hidden until authenticated) -->
     <div id="app" style="display: none;">
