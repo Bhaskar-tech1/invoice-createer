@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>InvoiceAI - Premium Invoice Generator</title>
+  </head>
+  <body>
+    <!-- Full Page Auth Wall -->
+    <div id="auth-page"></div>
+
+    <!-- Main Application (Hidden until authenticated) -->
+    <div id="app" style="display: none;">
+      <!-- Sidebar injected here -->
+      <aside id="sidebar-container"></aside>
+      
+      <!-- Main Content Area -->
+      <main class="main-content">
+        <div id="view-container"></div>
+      </main>
+      
+      <!-- Live Preview Panel -->
+      <aside id="preview-panel" class="preview-hidden"></aside>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
